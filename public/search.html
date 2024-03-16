@@ -43,7 +43,7 @@
     <div class="loader-bar" id="loader-bar"></div>
 
     <div class="search-results-container" id="search-results-container">
-        <!-- Search results will be displayed here -->
+
     </div>
 
     <script>
@@ -58,7 +58,7 @@
             menuBtn.classList.add("hide");
             searchBtn.classList.add("hide");
             cancelBtn.classList.add("show");
-            document.body.classList.add("nav-active"); // Add class to body to prevent scrolling
+            document.body.classList.add("nav-active"); 
         }
 
         cancelBtn.onclick = () => {
@@ -68,14 +68,14 @@
             cancelBtn.classList.remove("show");
             form.classList.remove("active");
             cancelBtn.style.color = "#ff3d00";
-            document.body.classList.remove("nav-active"); // Remove class from body to enable scrolling
+            document.body.classList.remove("nav-active"); 
         }
 
         searchBtn.onclick = () => {
             form.classList.add("active");
             searchBtn.classList.add("hide");
             cancelBtn.classList.add("show");
-            document.body.classList.add("nav-active"); // Add class to body to prevent scrolling
+            document.body.classList.add("nav-active"); 
         }
     </script>
     <script src="js/search.js"></script>

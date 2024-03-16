@@ -240,14 +240,14 @@ nav .logo.space{
 }
 
 #video-container {
-  max-width: 600px; /* Reduce the maximum width */
+  max-width: 600px; 
   text-align: center;
 }
 
 video {
-  width: 100%; /* Ensure the video fills the container */
-  max-height: 400px; /* Limit the maximum height of the video */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  width: 100%; 
+  max-height: 400px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 #episodes-container {
@@ -270,16 +270,16 @@ li {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   padding: 10px;
-  width: calc(25% - 10px); /* Adjust width to fit four episodes per row */
-  box-sizing: border-box; /* Include padding and border in width calculation */
-  text-align: center; /* Center episode number */
+  width: calc(25% - 10px);
+  box-sizing: border-box;
+  text-align: center;
 }
 
 a {
   color: #ff3d00;
   text-decoration: none;
   transition: color 0.3s;
-  display: block; /* Make episodes clickable as blocks */
+  display: block;
 }
 
 a:hover {

@@ -1,11 +1,10 @@
 //script.js
 let currentPage = 1;
-const animeLimit = 14; // Set the limit to 9 anime per page
+const animeLimit = 14; 
 let currentSlide = 0;
-let currentPageNumber = document.getElementById("currentPageNumber"); // Get the element reference
-currentPageNumber.textContent = currentPage; // Set the initial current page number
-const totalSlides = 4; // Assuming there are 5 recent anime items
-
+let currentPageNumber = document.getElementById("currentPageNumber"); 
+currentPageNumber.textContent = currentPage; 
+const totalSlides = 4; 
 document.addEventListener("DOMContentLoaded", function () {
     fetchAnime(currentPage);
     fetchRecentAnime();
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent default form submission behavior
+            event.preventDefault(); 
             const query = searchInput.value.trim();
             if (query !== '') {
                 searchAnime(query);
@@ -30,31 +29,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function searchAnime(query) {
-    // Show loading indicator
     const loader = document.getElementById('loader');
     loader.style.display = 'block';
 
 
 
     const encodedQuery = encodeURIComponent(query);
-    fetch(`/api/search?query=${encodedQuery}`)
+    fetch(`https://api.anime-dex.workers.dev/search/${encodedQuery}`)
         .then(response => response.json())
         .then(data => {
-            // Hide loading indicator after fetching search results
             loader.style.display = 'none';
-
-            // Redirect to the search results page with the search results
             const searchParams = new URLSearchParams();
             searchParams.append('query', query);
             searchParams.append('results', JSON.stringify(data.results));
             window.location.href = `search.html?${searchParams.toString()}`;
         })
         .catch(error => {
-            // Hide loading indicator in case of error
             loader.style.display = 'none';
 
             console.error('Error fetching search results:', error);
-            // Display error alert
             alert('Error fetching search results. Please try again later.');
         });
 }
@@ -66,28 +59,26 @@ function fetchAnime(pageNumber) {
 document.querySelector('.upcoming-text').style.display = 'none';
 document.querySelector('.recent-text').style.display = 'none';
     const loader = document.getElementById('loader');
-    loader.style.display = 'block'; // Show loader
+    loader.style.display = 'block'; 
 
     const animeContainer = document.getElementById('anime-container');
-    animeContainer.innerHTML = ''; // Clear previous anime items
-
-    // Show loader only for the popular anime section
+    animeContainer.innerHTML = ''; 
     loader.style.display = 'block';
 
-    fetch(`/api/popular${pageNumber}`)
+    fetch(`https://api.anime-dex.workers.dev/gogoPopular/${pageNumber}`)
         .then(response => response.json())
         .then(data => {
-            let animeCount = 0; // Initialize a counter for the number of anime items added
+            let animeCount = 0; 
             data.results.forEach(anime => {
-                if (animeCount < animeLimit) { // Check if the limit has been reached
+                if (animeCount < animeLimit) { 
                     const animeItem = document.createElement('div');
                     animeItem.classList.add('anime-item');
 
                     const title = document.createElement('p');
                     title.textContent = `Name: ${anime.title} \n`;
 
-                    const releaseDate = document.createElement('p'); // Create a new paragraph element for the release date
-                    releaseDate.textContent = ` Release Date: ${anime.releaseDate}`; // Set the text content to the release date
+                    const releaseDate = document.createElement('p'); 
+                    releaseDate.textContent = ` Release Date: ${anime.releaseDate}`; 
 
                     const image = document.createElement('img');
                     image.src = anime.image;
@@ -95,25 +86,25 @@ document.querySelector('.recent-text').style.display = 'none';
                     image.classList.add('anime-image');
 
                     const link = document.createElement('a');
-                    link.href = '#'; // Set href to '#' temporarily
+                    link.href = '#'; 
                     link.addEventListener('click', function () {
-                        viewEpisodes(anime.title); // Call function to view episodes
+                        viewEpisodes(anime.title); 
                     });
 
                     link.appendChild(image);
 
                     animeItem.appendChild(link);
                     animeItem.appendChild(title);
-                    animeItem.appendChild(releaseDate); // Append the release date to the anime item
+                    animeItem.appendChild(releaseDate); 
                     animeContainer.appendChild(animeItem);
 
-                    animeCount++; // Increment the counter
+                    animeCount++; 
                 } else {
-                    return; // Exit the loop if the limit has been reached
+                    return; 
                 }
             });
 
-            loader.style.display = 'none'; // Hide loader after fetching and rendering data
+            loader.style.display = 'none'; 
             document.querySelector('.popular-text').style.display = 'block';
 document.querySelector('.upcoming-text').style.display = 'block';
 document.querySelector('.recent-text').style.display = 'block';
@@ -121,15 +112,13 @@ document.querySelector('.recent-text').style.display = 'block';
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            loader.style.display = 'none'; // Hide loader in case of error
+            loader.style.display = 'none';
         });
 
     const animeTitles = document.querySelectorAll('.anime-title');
     animeTitles.forEach(title => {
-        title.style.color = '#fff'; // Change color to white
+        title.style.color = '#fff'; 
     });
-
-    // Update the current page number after fetching anime data
     currentPageNumber.textContent = currentPage;
 }
 
@@ -138,7 +127,7 @@ function fetchRecentAnime() {
     let currentPage = 1;
 
     function fetchData(page) {
-        fetch(`/api/recent/${page}`)
+        fetch(`https://api.anime-dex.workers.dev/api/recent/${page}`)
             .then(response => response.json())
             .then(data => {
                 data.results.forEach(anime => {
@@ -150,14 +139,12 @@ function fetchRecentAnime() {
                     image.alt = anime.title;
 
                     const title = document.createElement('p');
-                    title.textContent = `${anime.title} - Episode ${anime.episode}`; // Include episode number
+                    title.textContent = `${anime.title} - Episode ${anime.episode}`;
 
                     recentAnimeItem.appendChild(image);
                     recentAnimeItem.appendChild(title);
 
                     recentAnimeContainer.appendChild(recentAnimeItem);
-
-                    // Add click event listener to each recent anime item
                     recentAnimeItem.addEventListener('click', function () {
                         viewEpisodes(anime.title);
                     });
@@ -167,17 +154,13 @@ function fetchRecentAnime() {
     }
 
     fetchData(currentPage);
-
-    // Add event listener for scroll events
     recentAnimeContainer.addEventListener('scroll', () => {
         if (recentAnimeContainer.scrollLeft + recentAnimeContainer.clientWidth >= recentAnimeContainer.scrollWidth) {
-            // If scrolled to the end, load data for the next page
+    
             currentPage++;
             fetchData(currentPage);
         }
     });
-
-    // Function to check if the device is a mobile device
     function isMobileDevice() {
         return /Mobi|Android/i.test(navigator.userAgent);
     }
@@ -187,7 +170,7 @@ function fetchRecentAnime() {
 function enableSwipe(containerSelector) {
     const container = document.querySelector(containerSelector);
     let startX, startY, distX, distY;
-    let threshold = 50; // Minimum distance required for a swipe to register
+    let threshold = 50; 
 
     container.addEventListener('touchstart', e => {
         const touch = e.touches[0];
@@ -203,7 +186,7 @@ function enableSwipe(containerSelector) {
         distY = touch.clientY - startY;
 
         if (Math.abs(distX) > threshold && Math.abs(distX) > Math.abs(distY)) {
-            e.preventDefault(); // Prevent vertical scroll when swiping horizontally
+            e.preventDefault();
         } else {
             startX = null;
             startY = null;
@@ -217,17 +200,13 @@ function enableSwipe(containerSelector) {
 
         if (Math.abs(distX) > threshold && Math.abs(distX) > Math.abs(distY)) {
             if (distX > 0) {
-                // Swipe right
                 previousSlide();
             } else {
-                // Swipe left
                 nextSlide();
             }
         } else {
-            // Handle click event when swipe is not detected
             const targetElement = e.changedTouches[0].target;
             if (targetElement.tagName === 'IMG') {
-                // Clicked on an image, navigate to episode page
                 const animeTitle = targetElement.alt;
                 viewEpisodes(animeTitle);
             }
@@ -239,9 +218,6 @@ function enableSwipe(containerSelector) {
         distY = 0;
     });
 }
-
-
-// Call fetchRecentAnime to initialize recent anime section
 fetchRecentAnime();
 
 
@@ -273,9 +249,8 @@ function previousPage() {
 }
 
 function viewEpisodes(animeName) {
-    // Encode anime name to handle special characters
     const encodedAnimeName = encodeURIComponent(animeName);
-    window.location.href = `episode/episode.html?anime=${encodedAnimeName}`; // Redirect to episode page
+    window.location.href = `episode/episode.html?anime=${encodedAnimeName}`; 
 }
 
 const menuBtn = document.querySelector(".menu-icon span");
@@ -283,7 +258,7 @@ const searchBtn = document.querySelector(".search-icon");
 const cancelBtn = document.querySelector(".cancel-icon");
 const items = document.querySelector(".nav-items");
 const form = document.querySelector("form");
-const body = document.body; // Reference to the body element
+const body = document.body; 
 
 
 menuBtn.onclick = () => {
@@ -291,7 +266,7 @@ menuBtn.onclick = () => {
   menuBtn.classList.add("hide");
   searchBtn.classList.add("hide");
   cancelBtn.classList.add("show");
-  body.classList.add("nav-active"); // Add class to body to prevent scrolling
+  body.classList.add("nav-active"); 
 }
 
 cancelBtn.onclick = () => {
@@ -301,28 +276,26 @@ cancelBtn.onclick = () => {
   cancelBtn.classList.remove("show");
   form.classList.remove("active");
   cancelBtn.style.color = "#ff3d00";
-  body.classList.remove("nav-active"); // Remove class from body to enable scrolling
+  body.classList.remove("nav-active");
 }
 
 searchBtn.onclick = () => {
   form.classList.add("active");
   searchBtn.classList.add("hide");
   cancelBtn.classList.add("show");
-  body.classList.add("nav-active"); // Add class to body to prevent scrolling
+  body.classList.add("nav-active"); 
 }
 function fetchUpcomingAnime() {
     const upcomingContainer = document.getElementById('upcoming-anime-container');
     let currentPage = 1;
 
     function fetchData(page) {
-        fetch(`/api/upcoming/${page}`)
+        fetch(`https://api.anime-dex.workers.dev/upcoming/${page}`)
             .then(response => response.json())
             .then(data => {
                 data.results.forEach(anime => {
                     const upcomingItem = document.createElement('div');
                     upcomingItem.classList.add('upcoming-anime-item');
-
-                    // Create elements for anime details
                     const image = document.createElement('img');
                     image.src = anime.media.coverImage.extraLarge;
                     image.alt = anime.media.title.userPreferred;
@@ -350,20 +323,14 @@ function fetchUpcomingAnime() {
     }
 
     fetchData(currentPage);
-
-     // Add event listener for scroll events
      upcomingContainer.addEventListener('scroll', () => {
         if (upcomingContainer.scrollLeft + upcomingContainer.clientWidth >= upcomingContainer.scrollWidth) {
-            // If scrolled to the end, load data for the next page
             currentPage++;
             fetchData(currentPage);
         }
     });
-
-    // Add event listeners for scroll and touchend events
     upcomingContainer.addEventListener('scroll', () => {
         if (isMobileDevice() && upcomingContainer.scrollLeft + upcomingContainer.clientWidth >= upcomingContainer.scrollWidth) {
-            // Load more data when scrolled to the end on mobile devices
             currentPage++;
             fetchData(currentPage);
         }
@@ -371,18 +338,53 @@ function fetchUpcomingAnime() {
 
     upcomingContainer.addEventListener('touchend', () => {
         if (isMobileDevice() && upcomingContainer.scrollLeft + upcomingContainer.clientWidth >= upcomingContainer.scrollWidth) {
-            // Load more data when touched at the end on mobile devices
             currentPage++;
             fetchData(currentPage);
         }
     });
 
-    // Function to check if the device is a mobile device
     function isMobileDevice() {
         return /Mobi|Android/i.test(navigator.userAgent);
     }
 }
-
-
-// Call fetchUpcomingAnime to initialize the infinite scrolling
 fetchUpcomingAnime();
+
+const rickbotArt = `
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣷⡒⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⣆⠙⡄⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣤⣤⣤⣤⣤⣤⣤⣤⠤⢄⡀⠀⠀⣿⣿⣿⣿⣿⣿⡆⠘⡄⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣦⡈⠒⢄⢸⣿⣿⣿⣿⣿⣿⡀⠱⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣦⠀⠱⣿⣿⣿⣿⣿⣿⣇⠀⢃⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⣿⣿⣿⣷⡄⣹⣿⣿⣿⣿⣿⣿⣶⣾⣿⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣶⣿⣭⣍⡉⠙⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡷⢂⣓⣶⣶⣶⣶⣤⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⠟⢀⣴⢿⣿⣿⣿⠟⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠤⠤⠤⠤⠙⣻⣿⣿⣿⣿⣿⣿⣾⣿⣿⡏⣠⠟⡉⣾⣿⣿⠋⡠⠊⣿⡟⣹⣿⢿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⣤⣭⣤⣼⣿⢛⣿⣿⣿⣿⣻⣿⣿⠇⠐⢀⣿⣿⡷⠋⠀⢠⣿⣺⣿⣿⢺⣿⣋⣉⣉⣩⣴⣶⣤⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠻⠿⣿⣿⣿⣇⢻⣿⣿⡿⠿⣿⣯⡀⠀⢸⣿⠋⢀⣠⣶⠿⠿⢿⡿⠈⣾⣿⣿⣿⣿⡿⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⢧⡸⣿⣿⣿⠀⠃⠻⠟⢦⢾⢣⠶⠿⠏⠀⠰⠀⣼⡇⣸⣿⣿⠟⠉⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣶⣽⣿⡟⠓⠒⠀⠀⡀⠀⠠⠤⠬⠉⠁⣰⣥⣾⣿⣿⣶⣶⣷⡶⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠹⠟⣿⣿⡄⠀⠀⠠⡇⠀⠀⠀⠀⠀⢠⡟⠛⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠋⠹⣷⣄⠀⠐⣊⣀⠀⠀⢀⡴⠁⠣⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣀⠤⠊⢁⡸⠀⣆⠹⣿⣧⣀⠀⠀⡠⠖⡑⠁⠀⠀⠀⠑⢄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣦⣶⣿⣿⣟⣁⣤⣾⠟⠁⢀⣿⣆⠹⡆⠻⣿⠉⢀⠜⡰⠀⠀⠈⠑⢦⡀⠈⢾⠑⡾⠲⣄⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠖⠒⠚⠛⠛⠢⠽⢄⣘⣤⡎⠠⠿⠂⠀⠠⠴⠶⢉⡭⠃⢸⠃⠀⣿⣿⣿⠡⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡤⠶⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣋⠁⠀⠀⠀⠀⠀⢹⡇⠀⠀⠀⠀⠒⠢⣤⠔⠁⠀⢀⡏⠀⠀⢸⣿⣿⠀⢻⡟⠑⠢⢄⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⠀⠀⠀⡀⠉⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⣀⣀⡀⠀⢸⣷⡀⣀⣀⡠⠔⠊⠀⠀⢀⣠⡞⠀⠀⠀⢸⣿⡿⠀⠘⠀⠀⠀⠀⠈⠑⢤⠀⠀
+⠀⠀⢀⣴⣿⡀⠀⠀⡇⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣝⡛⠿⢿⣷⣦⣄⡀⠈⠉⠉⠁⠀⠀⠀⢀⣠⣴⣾⣿⡿⠁⠀⠀⠀⢸⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀
+⠀⢀⣾⣿⣿⡇⠀⢰⣷⠀⢀⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣭⣍⣉⣉⠀⢀⣀⣤⣶⣾⣿⣿⣿⢿⠿⠁⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⠉⢦⠀
+⢀⣼⣿⣿⡿⢱⠀⢸⣿⡀⢸⣧⡀⠀⢿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡭⠖⠁⠀⡠⠂⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⢠⠃⠀⠈⣀
+⢸⣿⣿⣿⡇⠀⢧⢸⣿⣇⢸⣿⣷⡀⠈⣿⣿⣇⠈⠛⢿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠿⠿⠿⠟⡻⠟⠉⠀⠀⡠⠊⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⣾⡄⠀⢠⣿⠔⠁⠀⢸
+⠈⣿⣿⣿⣷⡀⠀⢻⣿⣿⡜⣿⣿⣷⡀⠈⢿⣿⡄⠀⠀⠈⠛⠿⣿⣿⣿⣷⣶⣶⣶⡶⠖⠉⠀⣀⣤⡶⠋⠀⣠⣶⡏⠀⠀⠀⠀⠀⠀⠀⢰⣿⣧⣶⣿⣿⠖⡠⠖⠁
+⠀⣿⣿⣷⣌⡛⠶⣼⣿⣿⣷⣿⣿⣿⣿⡄⠈⢻⣷⠀⣄⡀⠀⠀⠀⠈⠉⠛⠛⠛⠁⣀⣤⣶⣾⠟⠋⠀⣠⣾⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⠷⠊⠀⢰⠀
+⢰⣿⣿⠀⠈⢉⡶⢿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠙⢇⠈⢿⣶⣦⣤⣀⣀⣠⣤⣶⣿⣿⡿⠛⠁⢀⣤⣾⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⣸⣿⡿⠿⠋⠙⠒⠄⠀⠉⡄
+⣿⣿⡏⠀⠀⠁⠀⠀⠀⠉⠉⠙⢻⣿⣿⣿⣿⣷⡀⠀⠀⠀⠻⣿⣿⣿⣿⣿⠿⠿⠛⠁⠀⣀⣴⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰
+
+                CREATED BY RICKBOT
+                PROJECT IN .NET
+`;
+
+console.log(rickbotArt);

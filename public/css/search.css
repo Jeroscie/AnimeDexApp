@@ -19,11 +19,10 @@ body{
 }
 
 
-/* Recent Anime Text */
 #search {
   text-align: center;
   margin-bottom: 40px;
-  margin-top: 40px; /* Adjust this value as needed */
+  margin-top: 40px; 
   color: white;
 }
 nav{
@@ -257,14 +256,11 @@ nav .logo.space{
   margin: 10px 0;
 }
 
-/* Grid layout for search results */
 .search-results-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 20px;
 }
-
-/* Adjustments for the anime item */
 .anime-item {
   display: flex;
   flex-direction: column;
@@ -276,12 +272,12 @@ nav .logo.space{
   border: 3px solid white;
   border-radius: 10px;
   height: auto;
-  max-height: 200px; /* Adjust the maximum height of the images as needed */
-  transition: transform 0.3s ease-in-out; /* Add transition for smoother hover effect */
+  max-height: 200px; 
+  transition: transform 0.3s ease-in-out; 
 }
 
 .anime-item img:hover {
-  transform: scale(1.1); /* Increase scale on hover */
+  transform: scale(1.1); 
 }
 
 .anime-item p {
@@ -289,12 +285,11 @@ nav .logo.space{
   margin-top: 10px;
   text-align: center;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Limit the name to two lines */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Media query for mobile devices */
 @media (max-width: 768px) {
   .search-results-container {
       grid-template-columns: repeat(2, 1fr);
@@ -323,7 +318,6 @@ nav .logo.space{
   100% { transform: rotate(360deg); }
 }
 
-/* Hide loader by default */
 .loader-bar {
   display: none;
 }

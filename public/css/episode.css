@@ -252,26 +252,26 @@ h2 {
 }
 
 .anime-item {
-    margin-bottom: 20px; /* Add spacing between items */
-    margin-top: 20px; /* Add space between the top of the container and the first row */
+    margin-bottom: 20px;
+    margin-top: 20px; 
   }
   
 .anime-item-container {
-  display: flex; /* Use flexbox to align items */
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
 }
 
 .anime-image {
-    max-width: 150px; /* Adjust the max-width to make the images smaller */
+    max-width: 150px; 
     height: auto;
     border-radius: 5px;
   }
   
 
 .anime-name {
-  margin-top: 10px; /* Add space between image and name */
-  text-align: center; /* Center the name */
+  margin-top: 10px;
+  text-align: center; 
 }
 
 #episode-container {
@@ -294,9 +294,9 @@ li {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   padding: 10px;
-  width: calc(25% - 10px); /* Adjust width to fit four episodes per row */
-  box-sizing: border-box; /* Include padding and border in width calculation */
-  text-align: center; /* Center episode number */
+  width: calc(25% - 10px); 
+  box-sizing: border-box; 
+  text-align: center; 
 }
 
 a {
@@ -305,7 +305,7 @@ a {
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s;
-  display: block; /* Make episodes clickable as blocks */
+  display: block;
 }
 
 a:hover {
